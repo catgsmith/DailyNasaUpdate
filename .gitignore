@@ -1,0 +1,12 @@
+# exclude specific
+*.zip
+*.docx
+server.js
+favicon.ico
+platforms/
+plugins/
+scss/
+ionic/
+jquery/
+resources/
+!*.json
