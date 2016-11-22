@@ -11,3 +11,6 @@ jquery/
 resources/
 hooks/
 !*.json
+config.xml
+debug.log
+package.json
