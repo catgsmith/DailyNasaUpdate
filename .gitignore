@@ -9,4 +9,5 @@ scss/
 ionic/
 jquery/
 resources/
+hooks/
 !*.json

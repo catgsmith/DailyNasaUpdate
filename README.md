@@ -9,6 +9,7 @@ You are required work in teams (described below) to write an Ionic application t
 ### Useful Links
 You will need an API key to access the Picture of the Day JSON feed, this can be obtained at the following address: 
 https://api.nasa.gov/index.html#apply-for-an-api-key
+* https://api.nasa.gov/api.html#apod
 
 
 * http://ionicframework.com/getting-started/
@@ -21,9 +22,9 @@ https://api.nasa.gov/index.html#apply-for-an-api-key
 -Research
 * http://showcase.ionicframework.com/
 
-- Codepens
+-Codepens
 * https://codepen.io/pen/tour/welcome/9
-* http://codepen.io/ionic/
+* http://codepen.io/ionic/pens/tags/
 * http://codepen.io/ionic/pen/mqolp
 * http://codepen.io/catgsmith/pen/jVEQoY
 
