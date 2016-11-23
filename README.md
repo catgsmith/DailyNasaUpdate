@@ -19,6 +19,9 @@ https://api.nasa.gov/index.html#apply-for-an-api-key
 -Technical
 * IONIC using Angular 1
 
+-Build an Ionic App in 45 minutes
+*https://www.youtube.com/watch?v=mjjLq43miYY
+
 -Research
 * http://showcase.ionicframework.com/
 
