@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('myNews', ['ionic'])
+angular.module('myNews', ['ionic', 'myNews.controllers', 'myNews.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -26,9 +26,12 @@ angular.module('myNews', ['ionic'])
     $stateProvider
     .state('homeState', {
         url: "/homeUrl",
-        templateUrl: "templates/home.html"
+        templateUrl: "templates/home.html",
+        controller: "todaysImageCtrl"
     });
-    // if none of rhe above states are matched, use this as the fallpack
+    // if none of the above states are matched, use this as the fallpack
     $urlRouterProvider.otherwise('/homeUrl');
-    
+
 });
+var teststring = "HelloWorld";
+
