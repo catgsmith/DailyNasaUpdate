@@ -1,7 +1,9 @@
+console.log("~Log: hello ");
 btnGo.addEventListener("click", getLocation)
 let xhr = new XMLHttpRequest()
 
 function getLocation(){
+    console.log("clicked button: ");
     let latitude = document.getElementById("whichLat").value
     let longitude = document.getElementById("whichLon").value 
     
@@ -16,7 +18,7 @@ function getLocation(){
 }
     
     function handleReadyState(response){
-        if (xhr.readyState == && xhr.status == 200){
+        if (xhr.readyState == 4 && xhr.status == 200){
          let data = JSON.parse(xhr.response)   
             console.log(data.latitude)
             

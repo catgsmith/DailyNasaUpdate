@@ -33,5 +33,3 @@ angular.module('myNews', ['ionic', 'myNews.controllers', 'myNews.services'])
     $urlRouterProvider.otherwise('/homeUrl');
 
 });
-var teststring = "HelloWorld";
-
