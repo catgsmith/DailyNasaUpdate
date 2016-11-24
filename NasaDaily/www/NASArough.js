@@ -2,7 +2,7 @@ var btnGo = document.getElementById("btnGo");
 
 
 btnGo.addEventListener("click", getLocation);
-var xhr = new XMLHttpRequest();
+var xhr = new XMLHttpRequest(); //create an XMLHttpReq object
 
 function getLocation() {
 
@@ -15,10 +15,10 @@ function getLocation() {
         "&lon=" + longitude + ""; // add the api key here!
 
     var whichMethod = "GET";
-    xhr.open(whichMethod, whichData);
+    xhr.open(whichMethod, whichData); //specifies the request using the GET method along with the file location (url)
 
     xhr.onreadystatechange = handleReadyState;
-    xhr.send();
+    xhr.send(); //sends req to the server, used for GET requests
 
 }
 
@@ -27,9 +27,24 @@ function handleReadyState(response) {
         var data = JSON.parse(xhr.response);
         console.log(data);
 
-        // var desc = data.latitude[0].description;
-        // document.getElementById("output").innerHTML = desc;
+    
+for (var i=0; i<data.length; i++){
+console.log(data + "DDDDDDD")  
+      
+    
+
+
+
+    } // end of for loop 
+         
     } else {
         console.log("oops!");
-    }
+        
+    }    
+    
+ 
+
+
+    
+        
 }
