@@ -29,15 +29,20 @@ function handleReadyState(response) {
 
  console.log("WORKS UNTIL HERE");
 
+        
 var times=data["response"]    
 for (var i=0; i<times.length; i++){
 console.log(times[i].risetime + "    Uncalculated Risetime"); 
     
 var date = new Date(times[i].risetime*1000);
-//var newDate = date.getMilliseconds();
 console.log(date + "     HERE HERE HERE HERE");   
 
-    document.getElementById("output").innerHTML="Nearest sighting is      :   " + date  
+     
+//var individualtimes = ["date"]  
+//for (var i=0; i<date.length; i++){
+//console.log(date[i].risetime + "    Uncalculated Risetime");    
+    
+    document.getElementById("output").innerHTML="Nearest sighting is      :   " + date 
     
     } // end of for loop
         
