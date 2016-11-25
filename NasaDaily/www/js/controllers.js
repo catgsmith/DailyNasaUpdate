@@ -11,4 +11,21 @@ angular.module('myNews.controllers', [])
 		$scope.img_url = dailyUpdate.url;
 
 	});
+})
+.controller('settingsCtrl', function($scope){
+	$scope.fromDate='0'; // default to today
+
+	$scope.setFromDate = function(noOfDays) {
+    switch(noOfDays) {
+      case '0':
+        $scope.title = "today";
+        break;
+      case '7':
+        $scope.title = "Week";
+        break;       
+      case '14':
+        $scope.title = "Fortnight";
+        break;
+    }
+  }
 });

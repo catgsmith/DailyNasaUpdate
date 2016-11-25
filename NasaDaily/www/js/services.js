@@ -21,7 +21,7 @@ angular.module('myNews.services', [])
                 .error(function() {
                     //process error scenario.
                     console.log("Error while making HTTP call.");
-                    deffered.reject();
+                    deferred.reject();
                 });
 
             // TODO: If date not in array then save object to cachedData

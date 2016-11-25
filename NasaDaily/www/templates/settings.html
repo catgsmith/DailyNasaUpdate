@@ -1,0 +1,19 @@
+<ion-pane>
+    <ion-header-bar class="bar-stable">
+        <div class="left"><a href="#/home">Nasa Picture of the Day</a></div>
+        <h1 class="title">Settings</h1>
+      </ion-header-bar>
+    <ion-content>
+        <div class="list">
+            
+            <div class="item item-divider">                
+                Show Pictures from: {{title}}
+            </div>
+            <ion-radio ng-model="fromDate" ng-value="'0'" ng-click="setFromDate(fromDate)">Today</ion-radio>
+            <ion-radio ng-model="fromDate" ng-value="'7'" ng-click="setFromDate(fromDate)">Last 7 Days</ion-radio>
+            <ion-radio ng-model="fromDate" ng-value="'14'" ng-click="setFromDate(fromDate)">Last 14 Days</ion-radio>
+        </div>
+    </ion-content>
+</ion-pane>
+
+

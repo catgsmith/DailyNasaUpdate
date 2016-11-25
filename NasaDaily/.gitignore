@@ -1,6 +1,21 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
 
+
+# exclude specific
+*.zip
+*.docx
+server.js
+favicon.ico
 node_modules/
 platforms/
 plugins/
+scss/
+ionic/
+jquery/
+resources/
+hooks/
+!*.json
+config.xml
+debug.log
+package.json

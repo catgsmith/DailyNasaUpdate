@@ -25,11 +25,16 @@ angular.module('myNews', ['ionic', 'myNews.controllers', 'myNews.services'])
 .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
     .state('homeState', {
-        url: "/homeUrl",
+        url: "/home",
         templateUrl: "templates/home.html",
         controller: "todaysImageCtrl"
+    })
+    .state('settingsState', {
+        url: "/settings",
+        templateUrl: "templates/settings.html",
+        controller: "settingsCtrl"
     });
     // if none of the above states are matched, use this as the fallpack
-    $urlRouterProvider.otherwise('/homeUrl');
+    $urlRouterProvider.otherwise('/home');
 
 });
