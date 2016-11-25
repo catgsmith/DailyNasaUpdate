@@ -1,6 +1,6 @@
 angular.module('myNews.services', [])
 
-.factory('DailyUpdate', function($http, $q) {
+.factory('DailyUpdate', function($http, $q, $ionicLoading, $timeout) {
         var cachedData = [];
 
         // Use $http to load todays data    
@@ -9,17 +9,26 @@ angular.module('myNews.services', [])
             //that result from continuously nested callbacks. They also make async error handling easier.
             var deferred = $q.defer();
 
+            $ionicLoading.show({ template: 'Loading...'});
+
 			// TODO: make url for today's date
             var url = "https://api.nasa.gov/planetary/apod?api_key=NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo";
 
             $http.get(url)
                 .success(function(data, status) {
                     console.log("Received DailyImage via HTTP"); // ..., data, status);
-                    //process success scenario.
-                    deferred.resolve(data);
+                    
+                    // Simulate a delay over http to show the loading modal popup
+                    // TODO : take the timeout function before going live
+                    $timeout(function(){
+                        //process success scenario.
+                        $ionicLoading.hide();
+                        deferred.resolve(data);
+                    }, 2000);
                 })
                 .error(function() {
                     //process error scenario.
+                    $ionicLoading.hide();
                     console.log("Error while making HTTP call.");
                     deferred.reject();
                 });
@@ -38,4 +47,3 @@ angular.module('myNews.services', [])
         }
     };
 });
-
