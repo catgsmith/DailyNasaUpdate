@@ -1,0 +1,17 @@
+
+
+ body {colour:teal; 
+                  background-color:#ffffff;}
+                  font-family:"Arial", "Helvetica", "sana-serif";
+            }
+            h1     {font-size:120%} /* or 1.2em */
+            input {background-color: antiquewhite;}
+            textarea {font-family:"Arial", "Helvetica", "sana-serif";}
+
+
+header a.nasa_logo {
+	display: inline-block;
+	background: url(https://spotthestation.nasa.gov/images/nasa.png) no-repeat top left;
+	width: 71px;
+	height: 85px;
+}

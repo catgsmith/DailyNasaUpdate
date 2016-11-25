@@ -6,7 +6,7 @@ var xhr = new XMLHttpRequest(); //create an XMLHttpReq object
 
 function getLocation() {
 
-    console.log("clicked button: ");
+    console.log("Clicked button: ");
     var latitude = document.getElementById("whichLat").value;
     var longitude = document.getElementById("whichLon").value;
 
@@ -27,24 +27,30 @@ function handleReadyState(response) {
         var data = JSON.parse(xhr.response);
         console.log(data);
 
+ console.log("WORKS UNTIL HERE");
+
+var times=data["response"]    
+for (var i=0; i<times.length; i++){
+console.log(times[i].risetime + "    Uncalculated Risetime"); 
     
-for (var i=0; i<data.length; i++){
-console.log(data + "DDDDDDD")  
-      
+var date = new Date(times[i].risetime*1000);
+//var newDate = date.getMilliseconds();
+console.log(date + "     HERE HERE HERE HERE");   
+
+    document.getElementById("output").innerHTML="Nearest sighting is      :   " + date  
     
+    } // end of for loop
+        
+console.log("ALSO WORKS UNTIL HERE");
+        
+        
 
-
-
-    } // end of for loop 
-         
+        
     } else {
-        console.log("oops!");
+        console.log("Why Oops!");
         
     }    
     
- 
-
-
     
         
 }
