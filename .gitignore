@@ -6,7 +6,6 @@ favicon.ico
 platforms/
 plugins/
 scss/
-ionic/
 jquery/
 resources/
 hooks/
