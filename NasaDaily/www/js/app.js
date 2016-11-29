@@ -30,7 +30,7 @@ angular.module('myNews', ['ionic', 'myNews.controllers', 'myNews.services', 'myN
     .state('homeState', {
         url: "/home",
         templateUrl: "templates/home.html",
-        controller: "todaysImageCtrl"
+        controller: "mainCtrl"
     })
     .state('settingsState', {
         url: "/settings",

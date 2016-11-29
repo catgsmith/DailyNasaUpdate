@@ -7,11 +7,11 @@
         <div class="list">
             
             <div class="item item-divider">                
-                Show Pictures from: {{title}}
+                Show Pictures from: {{title}} 
             </div>
-            <ion-radio ng-model="fromDate" ng-value="'0'" ng-click="setFromDate(fromDate)">Today</ion-radio>
-            <ion-radio ng-model="fromDate" ng-value="'7'" ng-click="setFromDate(fromDate)">Last 7 Days</ion-radio>
-            <ion-radio ng-model="fromDate" ng-value="'14'" ng-click="setFromDate(fromDate)">Last 14 Days</ion-radio>
+            <ion-radio ng-model="numOfDays" ng-value="1" ng-click="setNumOfDays(numOfDays)">Today</ion-radio>
+            <ion-radio ng-model="numOfDays" ng-value="7" ng-click="setNumOfDays(numOfDays)">Last 7 Days</ion-radio>
+            <ion-radio ng-model="numOfDays" ng-value="14" ng-click="setNumOfDays(numOfDays)">Last 14 Days</ion-radio>
         </div>
     </ion-content>
 </ion-pane>

@@ -1,13 +1,23 @@
 angular.module('myNews.services', [])
-.service('dateService', function() {
-    this.getToday = function() {
-        var today = new Date();
-        return today.toISOString().substr(0, 10);
-    }
-})
+.service('settingService', function($rootScope) {
+    this.dateRange = 1; // default for viewing Picture of the Day
 
+    this.setNumOfDays = function(setting) {
+        this.dateRange = setting;
+        $rootScope.$broadcast("settingUpdated"); 
+    };
+    this.getNumOfDays = function() {
+        return this.dateRange;
+    };
+})
+.service('dateService', function() {
+    var today = new Date();
+    this.getToday = function() {
+        return today.toISOString().substr(0, 10);
+    };
+    this.getDatesForNumOfDays = function() {}; 
+})
 .factory('DailyUpdate', function($http, $q, $ionicLoading, $timeout, CacheFactory, dateService, NASA_APOD) {
-        var today = dateService.getToday();
 
         // Check to make sure the cache doesn't already exist
         if (!CacheFactory.get('nasaCache')) {
@@ -20,16 +30,20 @@ angular.module('myNews.services', [])
 
         var nasaCache = CacheFactory.get('nasaCache');
 
-        // Use $http to load todays data    
-        function getTodaysUpdate() {
+        // Use $http to load todays data 
+        function getPicturesForNumberOfDays(numOfDays) {
+            var apodDate = dateService.getToday();
+            return getPictureForDate(apodDate);
+        }   
+        function getPictureForDate(apodDate) {
             var start = new Date().getTime();
             //Promises simplify asynchronous code by avoiding the so-called pyramid of doom 
             //that result from continuously nested callbacks. They also make async error handling easier.
             var deferred = $q.defer();
 
-            if (nasaCache.get(today)) {
-                console.log('loaded from cache: '+ today);
-                deferred.resolve(nasaCache.get(today));
+            if (nasaCache.get(apodDate)) {
+                console.log('loaded from cache: '+ apodDate);
+                deferred.resolve(nasaCache.get(apodDate));
             } else {
 
             $ionicLoading.show({ template: 'Loading...'});
@@ -45,7 +59,7 @@ angular.module('myNews.services', [])
                     $timeout(function(){
                         //process success scenario.
                         $ionicLoading.hide();
-                        nasaCache.put(today, data);
+                        nasaCache.put(apodDate, data);
                         deferred.resolve(data);
                     }, 2000);
                 })
@@ -62,6 +76,6 @@ angular.module('myNews.services', [])
 
 
     return {
-        getTodaysUpdate: getTodaysUpdate,
+        getPicturesForNumberOfDays: getPicturesForNumberOfDays,
     };
 });
