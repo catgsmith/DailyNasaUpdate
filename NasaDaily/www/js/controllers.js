@@ -1,40 +1,36 @@
 angular.module('myNews.controllers', [])
 
-.controller('mainCtrl', function($scope, DailyUpdate, settingService) {
+.controller('mainCtrl', function($scope, DailyUpdate, settingsService) {
+    // Add listener to page title - checking caching server 
     var _pageTitle = document.getElementById("pageTitle");
     // Refresh Picture of the Day from data service
     _pageTitle.addEventListener("click", getNasaData, false);
 
 
-    function getNasaData(numOfDays) {
-
-        DailyUpdate.getPicturesForNumberOfDays(numOfDays).then(function(data) {
-            dailyUpdate = data;
-
-            $scope.title = dailyUpdate.title;
-            $scope.img_date = dailyUpdate.date;
-            $scope.explanation = dailyUpdate.explanation;
-            $scope.img_url = dailyUpdate.url;
-
-        });
-    }
-
-    // On page load - get Nasa Data
-    $scope.numOfDays = settingService.getNumOfDays();
-    getNasaData($scope.numOfDays);
-
-    $scope.$on('settingUpdated', function() {
-      $scope.numOfDays = settingService.getNumOfDays();
-      console.log("~Log $scope.numOfDays mainCtrl: " + $scope.numOfDays);
+    $scope.$on('$ionicView.beforeEnter', function() {
+      console.log("==> mainCtrl: getNasaData for" + $scope.numOfDays + " days");
+      getNasaData();
     });
 
+
+    function getNasaData() {
+        $scope.numOfDays = settingsService.getNumOfDays();
+        DailyUpdate.getPicturesForNumberOfDays($scope.numOfDays)
+        .then(function(data) {
+            $scope.apodListing = data; 
+        });
+    }
 })
 
-.controller('settingsCtrl', function($scope, settingService){
-	$scope.numOfDays = settingService.getNumOfDays();
+.controller('settingsCtrl', function($scope, settingsService){
+
+  $scope.$on('$ionicView.beforeEnter', function() {
+    $scope.numOfDays = settingsService.getNumOfDays();
+    console.log("~Log $scope.numOfDays settingsCtrl: " + $scope.numOfDays);
+  });
 
 	$scope.setNumOfDays = function(noOfDays) {
-    settingService.setNumOfDays(noOfDays);
+    settingsService.setNumOfDays(noOfDays);
 
     switch(noOfDays) {
       case 1:
@@ -48,9 +44,4 @@ angular.module('myNews.controllers', [])
         break;
     }
   };
-
-  $scope.$on('settingUpdated', function() {
-    $scope.numOfDays = settingService.getNumOfDays();
-    console.log("~Log $scope.numOfDays settingsCtrl: " + $scope.numOfDays);
-  });
 });

@@ -1,12 +1,16 @@
 <ion-pane>
-      <ion-header-bar class="bar-stable">
-      	<div class="left"><a href="#/settings">Settings</a></div>
+    <ion-header-bar class="bar-stable">
+        <div class="left"><a href="#/settings">Settings</a></div>
         <h1 class="title"><span id="pageTitle">Nasa Picture of the Day</span></h1>
-      </ion-header-bar>
-      <ion-content>
-      <h4>{{title}}</h4>
-      <p>{{img_date}}</p>
-      <p>{{explanation}}</p>
-      <div><img src="{{img_url}}" alt="{{title}}"></div> 
-      </ion-content>
+    </ion-header-bar>
+    <ion-content>
+        <ion-list class="wrapping-list">
+            <ion-item ng-repeat="apod in apodListing" class="item-text-wrap">
+                <h4>{{ apod.title }}</h4>
+                <p>{{ apod.img_date }}</p>
+                <p>{{ apod.explanation }}</p>
+                <div><img src="{{ apod.img_url}}" alt="{{apod.title}}"></div>
+            </ion-item>
+        </ion-list>
+    </ion-content>
 </ion-pane>
