@@ -82,7 +82,6 @@ angular.module('myNews.services')
 
         // PRIVATE Function : get Picture For Given Date Object
         function getPictureForDate(apodDate) {
-
             // Format the date to insert into the url for NASA APOD service
             apodDateString = apodDate.toISOString().substr(0, 10);
             var url = NASA_APOD.API_URL +"date="+ apodDateString + "&api_key=" + NASA_APOD.API_KEY;
@@ -104,7 +103,10 @@ angular.module('myNews.services')
                     console.log('time taken for HTTP request: ' + (new Date().getTime() - start) + 'ms');
                     // Add date object for sorting results array later
                         if (data.title !== null && data.title !== undefined) {
-                            data.apodDate = apodDate;
+                              var split = data.date.split("-");
+                                
+                            data.apodDate = new Date(split[0], split[1]-1, split[2]);
+                            //data.apodDate = apodDate;
                             // Add data to cache - key by date in string format.
                             nasaCache.put(apodDateString, data);
                         }     

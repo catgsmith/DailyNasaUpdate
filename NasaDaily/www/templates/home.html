@@ -5,7 +5,7 @@
     </ion-header-bar>
     <ion-content delegate-handle="mainScroll">
         <ion-list class="wrapping-list">
-            <ion-item ng-repeat="apod in apodListing" class="item-text-wrap background-lightblue">
+            <ion-item ng-repeat="apod in apodListing | orderBy: '-apodDate'" class="item-text-wrap background-lightblue">
                 <div class="h2-blue">{{ apod.title }}</div>
                 <div class="h2-blue">{{ apod.img_date }}</div>
                 <p>{{ apod.explanation }}</p>

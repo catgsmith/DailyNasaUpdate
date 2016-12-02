@@ -10,8 +10,9 @@ angular.module('myNews.controllers', [])
     $scope.$on('$ionicView.beforeEnter', function() {
       var currentNumOfDays = $scope.numOfDays;
       $scope.numOfDays = settingsService.getNumOfDays();
-      if($scope.numOfDays < currentNumOfDays)
-              $ionicScrollDelegate.$getByHandle('mainScroll').scrollTop();
+      // Scroll to top of page
+      if($scope.numOfDays < currentNumOfDays) {
+              $ionicScrollDelegate.$getByHandle('mainScroll').scrollTop(); }
       
       console.log("==> mainCtrl: getNasaData for " + $scope.numOfDays + " days");
       getNasaData();
@@ -19,14 +20,16 @@ angular.module('myNews.controllers', [])
 
     $scope.$on('InternalServerError', function() {
       if($scope.numOfDays === 1) {
-        APIInterceptor.resetResponse();
+        // When today's APOD has not been issued yet
+        APIInterceptor.resetResponse(); // do this once
         var startDate = new Date(); 
-        startDate.setDate(startDate.getDate()-1);
+        startDate.setDate(startDate.getDate()-1); // use yesterday
         dateService.setStartDate(startDate);
         getNasaData();
       }
-    })
+    });
 
+    // Get data from ADOP Service and bind to view
     function getNasaData() {
         $scope.numOfDays = settingsService.getNumOfDays();
         DailyUpdate.getPicturesForNumberOfDays($scope.numOfDays)
