@@ -16,7 +16,7 @@ angular.module('myNews.services')
         nasaCache.setOptions({
             onExpire: function(key,value) {
                 getPicturesForNumberOfDays(apodResults.length).then( function(){
-                    console.log("Cached data was automatically refreshed")
+                    console.log("Cached data was automatically refreshed");
                 }, function (){
                     console.log("Error on refresh of cache. Putting expired data back");
                     nasaCache.put(key,value);
@@ -26,8 +26,8 @@ angular.module('myNews.services')
 
 
         // Create a APOD object constructor
-        var APOD = function( apodDate, title, img_date, explanation, img_url ){
-            this.apodDate = apodDate;
+        var APOD = function( apodDateVal, title, img_date, explanation, img_url ){
+            this.apodDateVal = apodDateVal;
             this.title = title;
             this.img_date = img_date;
             this.explanation = explanation;
@@ -54,7 +54,7 @@ angular.module('myNews.services')
                 promise = getPictureForDate(apodDateArray[i])
                     .then(function(data) {
                         if(data.code !== 500) // Server error
-                        apodResults.push( new APOD(data.apodDate, data.title, data.date, data.explanation, data.url));
+                        apodResults.push( new APOD(data.apodDateVal, data.title, data.date, data.explanation, data.url));
                     });
                 promises.push(promise);
                    
@@ -66,8 +66,8 @@ angular.module('myNews.services')
                 console.log("Number of APOD objects loaded: " + apodResults.length);
                 // sort the result array when all the new APOD objects have been added
                 apodResults.sort(function(a,b){
-                // Sort in descending date order    
-                return b.apodDate.valueOf() - a.apodDate.valueOf();
+                    // Sort in descending date order    
+                    return b.apodDateVal - a.apodDateVal;
                 });
             }).then( function() { 
                 $ionicLoading.hide();
@@ -102,13 +102,13 @@ angular.module('myNews.services')
                 .success(function(data, status) {
                     console.log('time taken for HTTP request: ' + (new Date().getTime() - start) + 'ms');
                     // Add date object for sorting results array later
-                        if (data.title !== null && data.title !== undefined) {
-                              var split = data.date.split("-");
-                                
-                            data.apodDate = new Date(split[0], split[1]-1, split[2]);
-                            //data.apodDate = apodDate;
+                        if (data.date !== null && data.date !== undefined) {
+                            var split = data.date.split("-");
+                            var dataApodDate = new Date(split[0], split[1]-1, split[2]);
+                            data.apodDateVal = dataApodDate.getTime();
                             // Add data to cache - key by date in string format.
-                            nasaCache.put(apodDateString, data);
+                            dataApodDateString = dataApodDate.toISOString().substr(0, 10);
+                            nasaCache.put(dataApodDateString, data);
                         }     
                     
                         deferred.resolve(data);
