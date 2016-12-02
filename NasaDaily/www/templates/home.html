@@ -3,11 +3,11 @@
         <div class="left"><a href="#/settings">Settings</a></div>
         <h1 class="title"><span id="pageTitle">Nasa Picture of the Day</span></h1>
     </ion-header-bar>
-    <ion-content>
+    <ion-content delegate-handle="mainScroll">
         <ion-list class="wrapping-list">
-            <ion-item ng-repeat="apod in apodListing" class="item-text-wrap">
-                <h4>{{ apod.title }}</h4>
-                <p>{{ apod.img_date }}</p>
+            <ion-item ng-repeat="apod in apodListing" class="item-text-wrap background-lightblue">
+                <div class="h2-blue">{{ apod.title }}</div>
+                <div class="h2-blue">{{ apod.img_date }}</div>
                 <p>{{ apod.explanation }}</p>
                 <div><img src="{{ apod.img_url}}" alt="{{apod.title}}"></div>
             </ion-item>

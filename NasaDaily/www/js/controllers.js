@@ -1,6 +1,6 @@
 angular.module('myNews.controllers', [])
 
-.controller('mainCtrl', function($scope, DailyUpdate, settingsService) {
+.controller('mainCtrl', function($scope, $ionicScrollDelegate, DailyUpdate, settingsService, dateService, APIInterceptor) {
     // Add listener to page title - checking caching server 
     var _pageTitle = document.getElementById("pageTitle");
     // Refresh Picture of the Day from data service
@@ -8,10 +8,24 @@ angular.module('myNews.controllers', [])
 
 
     $scope.$on('$ionicView.beforeEnter', function() {
-      console.log("==> mainCtrl: getNasaData for" + $scope.numOfDays + " days");
+      var currentNumOfDays = $scope.numOfDays;
+      $scope.numOfDays = settingsService.getNumOfDays();
+      if($scope.numOfDays < currentNumOfDays)
+              $ionicScrollDelegate.$getByHandle('mainScroll').scrollTop();
+      
+      console.log("==> mainCtrl: getNasaData for " + $scope.numOfDays + " days");
       getNasaData();
     });
 
+    $scope.$on('InternalServerError', function() {
+      if($scope.numOfDays === 1) {
+        APIInterceptor.resetResponse();
+        var startDate = new Date(); 
+        startDate.setDate(startDate.getDate()-1);
+        dateService.setStartDate(startDate);
+        getNasaData();
+      }
+    })
 
     function getNasaData() {
         $scope.numOfDays = settingsService.getNumOfDays();
@@ -31,17 +45,5 @@ angular.module('myNews.controllers', [])
 
 	$scope.setNumOfDays = function(noOfDays) {
     settingsService.setNumOfDays(noOfDays);
-
-    switch(noOfDays) {
-      case 1:
-        $scope.title = "today";
-        break;
-      case 7:
-        $scope.title = "Week";
-        break;       
-      case 14:
-        $scope.title = "Fortnight";
-        break;
-    }
   };
 });

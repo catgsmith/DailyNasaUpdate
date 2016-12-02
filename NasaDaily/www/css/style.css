@@ -1,4 +1,14 @@
 /* Empty. Add your own CSS if you like */
+.background-lightblue {
+	background-color: #A9D4DF;
+}
+
+.h2-blue {
+	margin-bottom: 15px;
+	font-size: 16px;
+    font-weight: normal;
+    color: blue;
+}
 img {
     max-width: 550px;
     height: auto;

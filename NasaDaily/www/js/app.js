@@ -22,7 +22,7 @@ angular.module('myNews', ['ionic', 'angular-cache', 'myNews.controllers', 'myNew
     }
   });
 })
-.config(function ($stateProvider, $urlRouterProvider, CacheFactoryProvider) {
+.config(function ($stateProvider, $urlRouterProvider, CacheFactoryProvider, $httpProvider) {
     //Let's have items which are added to cache expire after an hour
     angular.extend(CacheFactoryProvider.defaults, { maxAge: 60 * 60 * 1000 }); // 1 hour
 
@@ -40,4 +40,5 @@ angular.module('myNews', ['ionic', 'angular-cache', 'myNews.controllers', 'myNew
     // if none of the above states are matched, use this as the fallpack
     $urlRouterProvider.otherwise('/home');
 
+    $httpProvider.interceptors.push('APIInterceptor');
 });

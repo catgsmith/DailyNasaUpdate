@@ -7,11 +7,23 @@ angular.module('myNews.services')
         if (!CacheFactory.get('nasaCache')) {
             // 
             CacheFactory.createCache('nasaCache', {
-                deleteOnExpire: 'aggressive',
-                recycleFreq: 60000
+                deleteOnExpire: 'aggressive', // Items will be deleted from this cache right when they expire.
+                cacheFlushInterval: 10 * 60 * 1000, // This cache will clear itself every 10 mins
+                storageMode: 'localStorage' // This cache will use `localStorage`
             });
         }
         var nasaCache = CacheFactory.get('nasaCache');
+        nasaCache.setOptions({
+            onExpire: function(key,value) {
+                getPicturesForNumberOfDays(apodResults.length).then( function(){
+                    console.log("Cached data was automatically refreshed")
+                }, function (){
+                    console.log("Error on refresh of cache. Putting expired data back");
+                    nasaCache.put(key,value);
+                });
+            }
+        });
+
 
         // Create a APOD object constructor
         var APOD = function( apodDate, title, img_date, explanation, img_url ){
@@ -41,6 +53,7 @@ angular.module('myNews.services')
                 // Call getPictureForDate then push to apodResults array
                 promise = getPictureForDate(apodDateArray[i])
                     .then(function(data) {
+                        if(data.code !== 500) // Server error
                         apodResults.push( new APOD(data.apodDate, data.title, data.date, data.explanation, data.url));
                     });
                 promises.push(promise);
@@ -83,17 +96,21 @@ angular.module('myNews.services')
                 deferred.resolve(nasaCache.get(apodDateString));
             } else {
 
-            // if not in Cache then call out to NASA APOD service over http
-            var start = new Date().getTime(); // keep track of how long http takes
+                // if not in Cache then call out to NASA APOD service over http
+                var start = new Date().getTime(); // keep track of how long http takes
 
-            $http.get(url)
+                $http.get(url)
                 .success(function(data, status) {
                     console.log('time taken for HTTP request: ' + (new Date().getTime() - start) + 'ms');
                     // Add date object for sorting results array later
-                    data.apodDate = apodDate;
-                    // Add data to cache - key by date in string format.
-                    nasaCache.put(apodDateString, data);
-                    deferred.resolve(data);
+                        if (data.title !== null && data.title !== undefined) {
+                            data.apodDate = apodDate;
+                            // Add data to cache - key by date in string format.
+                            nasaCache.put(apodDateString, data);
+                        }     
+                    
+                        deferred.resolve(data);
+                    
                 })
                 .error(function() {
                     //process error scenario.

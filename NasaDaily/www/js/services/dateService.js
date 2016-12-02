@@ -1,10 +1,11 @@
 angular.module('myNews.services')
-    .service('dateService', function() {
-    //  maintain a list of dates
-    this.dateArray = [];
-    // at least get todays date
-    var today = new Date(); 
-    this.dateArray.push(today);
+    .service('dateService', function() {    
+    
+    this.setStartDate = function(startDate) {
+        //  maintain a list of dates
+        this.dateArray = [];
+        this.dateArray.push(startDate);
+    }
 
     this.getDateArray = function(numOfDays) {
         
@@ -23,4 +24,7 @@ angular.module('myNews.services')
         // Always return a shallow copy
         return this.dateArray.slice(); // this is how to make a copy
     };
+    // start with today's date
+    var today = new Date(); 
+    this.setStartDate(today);
 });
