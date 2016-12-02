@@ -9,16 +9,4 @@ angular.module('myNews.services', [])
     this.getNumOfDays = function() {
         return this.dateRange;
     };
-})
-.service('APIInterceptor', function($rootScope) {
-    var service = this;
-    service.responseError = function(response) {
-        if (response.status === 500) {
-            $rootScope.$broadcast('InternalServerError');
-        }
-        return response;
-    };
-    this.resetResponse = function() {
-        service.responseError = null;
-    }
-})
+});

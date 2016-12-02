@@ -1,30 +1,50 @@
 angular.module('myNews.services')
-    .service('dateService', function() {    
+    .factory('dateService', function() {  
+    var offsetDays = 0;    
+    var startDate = new Date(); 
+    var dateArray = []; 
     
-    this.setStartDate = function(startDate) {
+    setStartDate = function(newStartDate) {
+        offsetDays = getNumOfDays(startDate,newStartDate);
         //  maintain a list of dates
-        this.dateArray = [];
-        this.dateArray.push(startDate);
-    }
+        dateArray = [];
+        dateArray.push(newStartDate);
+    };
 
-    this.getDateArray = function(numOfDays) {
-        
+    getOffsetDays = function() {
+        return offsetDays;
+    };
 
-        if ( this.dateArray.length > numOfDays) {
-            return  this.dateArray.slice(0, numOfDays);
+    getDateArray = function(numOfDays) {
+        if ( dateArray.length > numOfDays) {
+            return  dateArray.slice(0, numOfDays);
 
-        } else if ( this.dateArray.length < numOfDays) { 
+        } else if ( dateArray.length < numOfDays) { 
             // Calculate days from  today, back number of days
-            for(var i=this.dateArray.length; i<numOfDays; i++) {
-                var nextDate = new Date(this.dateArray[this.dateArray.length-1]);
+            for(var i=dateArray.length; i<numOfDays; i++) {
+                var nextDate = new Date(dateArray[dateArray.length-1]);
                 nextDate.setDate(nextDate.getDate()-1); 
-                this.dateArray[i] = nextDate;
+                dateArray[i] = nextDate;
             }
         } 
         // Always return a shallow copy
-        return this.dateArray.slice(); // this is how to make a copy
+        return dateArray.slice(); // this is how to make a copy
     };
-    // start with today's date
-    var today = new Date(); 
-    this.setStartDate(today);
+
+    getNumOfDays = function(dateFrom, dateTo) {
+        date1 = new Date(dateFrom.toISOString().substr(0, 10));
+        date2 = new Date(dateTo.toISOString().substr(0, 10));
+        diff = date1.getTime() - date2.getTime();
+        var days = Math.round(Math.abs(diff/(1000*60*60*24)));
+        return days;
+    };
+    // start with today's date 
+    setStartDate(startDate);
+
+    return {
+        setStartDate: setStartDate,
+        getOffsetDays: getOffsetDays,
+        getDateArray: getDateArray,
+        getNumOfDays: getNumOfDays
+    };
 });

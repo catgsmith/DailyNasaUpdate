@@ -1,6 +1,6 @@
 angular.module('myNews.controllers', [])
 
-.controller('mainCtrl', function($scope, $ionicScrollDelegate, DailyUpdate, settingsService, dateService, APIInterceptor) {
+.controller('mainCtrl', function($scope, $ionicScrollDelegate, DailyUpdate, settingsService, dateService) {
     // Add listener to page title - checking caching server 
     var _pageTitle = document.getElementById("pageTitle");
     // Refresh Picture of the Day from data service
@@ -18,16 +18,8 @@ angular.module('myNews.controllers', [])
       getNasaData();
     });
 
-    $scope.$on('InternalServerError', function() {
-      if($scope.numOfDays === 1) {
-        // When today's APOD has not been issued yet
-        APIInterceptor.resetResponse(); // do this once
-        var startDate = new Date(); 
-        startDate.setDate(startDate.getDate()-1); // use yesterday
-        dateService.setStartDate(startDate);
-        getNasaData();
-      }
-    });
+    $scope.$on('StartFromYesterday', function(){ 
+      getNasaData(); });
 
     // Get data from ADOP Service and bind to view
     function getNasaData() {

@@ -1,5 +1,5 @@
 angular.module('myNews.services')
-    .factory('DailyUpdate',  function($http, $q, $ionicLoading, $timeout, CacheFactory, dateService, NASA_APOD) {
+    .factory('DailyUpdate',  function($http, $q, $ionicLoading, $rootScope, CacheFactory, dateService, NASA_APOD) {
         // This is a list of APOD objects to pass back to controller
         var apodResults = []; 
         
@@ -8,7 +8,7 @@ angular.module('myNews.services')
             // 
             CacheFactory.createCache('nasaCache', {
                 deleteOnExpire: 'aggressive', // Items will be deleted from this cache right when they expire.
-                cacheFlushInterval: 60 * 60 * 1000, // This cache will clear itself every 10 mins
+                cacheFlushInterval: 5 * 60 * 1000, // This cache will clear itself every hour
                 storageMode: 'localStorage' // This cache will use `localStorage`
             });
         }
@@ -53,7 +53,7 @@ angular.module('myNews.services')
                 // Call getPictureForDate then push to apodResults array
                 promise = getPictureForDate(apodDateArray[i])
                     .then(function(data) {
-                        if(data.code !== 500) // Server error
+                        if(data.date !== null && data.date !== undefined) // Good data
                         apodResults.push( new APOD(data.apodDateVal, data.title, data.date, data.explanation, data.url));
                     });
                 promises.push(promise);
@@ -74,7 +74,17 @@ angular.module('myNews.services')
                 deferred.resolve(apodResults); }, 
                 function(error){
                 $ionicLoading.hide();
-                console.log("~Log: " + error.message);
+                console.log("~Log: Failure to load data");
+
+                var offsetDays = dateService.getOffsetDays();
+                // error.code === 500 INTERNAL SERVER ERROR
+                if (numOfDays===1 && error.code === 500 && offsetDays === 0) {
+                    var startDate = new Date();
+                    startDate.setDate(startDate.getDate()-1); // use yesterday
+                    dateService.setStartDate(startDate);
+                    $rootScope.$broadcast("StartFromYesterday");
+                }
+
             });
             // return promise of array of APOD objects 
             return deferred.promise;
@@ -100,24 +110,27 @@ angular.module('myNews.services')
 
                 $http.get(url)
                 .success(function(data, status) {
-                    console.log('time taken for HTTP request: ' + (new Date().getTime() - start) + 'ms');
+                    var dataApodDateString = "";
                     // Add date object for sorting results array later
-                        if (data.date !== null && data.date !== undefined) {
-                            var split = data.date.split("-");
-                            var dataApodDate = new Date(split[0], split[1]-1, split[2]);
-                            data.apodDateVal = dataApodDate.getTime();
-                            // Add data to cache - key by date in string format.
-                            dataApodDateString = dataApodDate.toISOString().substr(0, 10);
-                            nasaCache.put(dataApodDateString, data);
-                        }     
-                    
-                        deferred.resolve(data);
+                    if (data.date !== null && data.date !== undefined) {
+                        var split = data.date.split("-");
+                        var dataApodDate = new Date(split[0], split[1]-1, split[2]);
+                        data.apodDateVal = dataApodDate.getTime();
+                        // Add data to cache - key by date in string format.
+                        dataApodDateString = dataApodDate.toISOString().substr(0, 10);
+                        nasaCache.put(dataApodDateString, data);
+                    } 
+                    var now = new Date();
+                    console.log(now.toLocaleTimeString() + ': time taken for HTTP request on ['+ 
+                        dataApodDateString +']: ' + (now.getTime() - start) + 'ms');    
+                
+                    deferred.resolve(data);
                     
                 })
-                .error(function() {
+                .error(function(error) {
                     //process error scenario.
                     console.log("Error while making HTTP call.");
-                    deferred.reject();
+                    deferred.reject(error);
                 });
             }
             // return promise of NASA APOD for given date
