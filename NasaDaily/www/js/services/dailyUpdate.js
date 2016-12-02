@@ -8,7 +8,7 @@ angular.module('myNews.services')
             // 
             CacheFactory.createCache('nasaCache', {
                 deleteOnExpire: 'aggressive', // Items will be deleted from this cache right when they expire.
-                cacheFlushInterval: 10 * 60 * 1000, // This cache will clear itself every 10 mins
+                cacheFlushInterval: 60 * 60 * 1000, // This cache will clear itself every 10 mins
                 storageMode: 'localStorage' // This cache will use `localStorage`
             });
         }
