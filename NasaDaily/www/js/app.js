@@ -1,9 +1,9 @@
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// 'myNews' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('myNews', ['ionic', 'angular-cache', 'myNews.controllers', 'myNews.values',  'myNews.services' ])
+angular.module('myNews', ['ionic', 'angular-cache', 'myNews.controllers', 'myNews.directives', 'myNews.values',  'myNews.services' ])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -22,9 +22,9 @@ angular.module('myNews', ['ionic', 'angular-cache', 'myNews.controllers', 'myNew
     }
   });
 })
-.config(function ($stateProvider, $urlRouterProvider, CacheFactoryProvider) {
+.config(function ($stateProvider, $urlRouterProvider, CacheFactoryProvider, CACHE_SETTING) {
     //Let's have items which are added to cache expire after an hour
-    angular.extend(CacheFactoryProvider.defaults, { maxAge: 5 * 60 * 1000 }); // 1 hour
+    angular.extend(CacheFactoryProvider.defaults, { maxAge: CACHE_SETTING.TTL_MINS }); // 1 hour
 
     $stateProvider
     .state('homeState', {

@@ -14,3 +14,9 @@ img {
     min-width: 300px;
     height: auto;
 }
+.nav {
+	width: 20%;
+}
+.nav a {
+	width: 100%;;
+}

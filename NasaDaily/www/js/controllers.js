@@ -4,7 +4,9 @@ angular.module('myNews.controllers', [])
     // Add listener to page title - checking caching server 
     var _pageTitle = document.getElementById("pageTitle");
     // Refresh Picture of the Day from data service
-    _pageTitle.addEventListener("click", getNasaData, false);
+    _pageTitle.addEventListener("click", function() {
+      $ionicScrollDelegate.$getByHandle('mainScroll').scrollTop();
+    }, false);
 
 
     $scope.$on('$ionicView.beforeEnter', function() {

@@ -1,5 +1,5 @@
 angular.module('myNews.services')
-    .factory('DailyUpdate',  function($http, $q, $ionicLoading, $rootScope, CacheFactory, dateService, NASA_APOD) {
+    .factory('DailyUpdate',  function($http, $q, $ionicLoading, $rootScope, CacheFactory, dateService, NASA_APOD, CACHE_SETTING) {
         // This is a list of APOD objects to pass back to controller
         var apodResults = []; 
         
@@ -8,7 +8,7 @@ angular.module('myNews.services')
             // 
             CacheFactory.createCache('nasaCache', {
                 deleteOnExpire: 'aggressive', // Items will be deleted from this cache right when they expire.
-                cacheFlushInterval: 5 * 60 * 1000, // This cache will clear itself every hour
+                cacheFlushInterval: CACHE_SETTING.TTL_MINS, // This cache will clear itself every hour
                 storageMode: 'localStorage' // This cache will use `localStorage`
             });
         }
